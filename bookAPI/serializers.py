@@ -12,9 +12,9 @@ class BookSerializer(serializers.ModelSerializer):
     price_after_iva = serializers.SerializerMethodField(method_name='calculate_price_after_iva')
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'publication_date', 'isbn', 'price', 'category_id', 'category']
-    def calculate_price_after_iva(self, price):
-        return price * 1.16
+        fields = ['id', 'title', 'author', 'publication_date', 'isbn', 'price', 'price_after_iva','category_id', 'category']
+    def calculate_price_after_iva(self, obj: Book):
+        return float(obj.price) * 1.16
     def create(self, validated_data):
         category_id = validated_data.pop('category_id')
         category = BookCategory.objects.get(pk=category_id)
